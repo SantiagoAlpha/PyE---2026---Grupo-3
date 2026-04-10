@@ -1,4 +1,5 @@
-# TP1 2026
+# TP1 2026 - GRUPO 3
+#Bruno Minighin - Santiago Motta - Gaspar Emilio Rubies
 
 Este repositorio simula ser parte del ecosistema del sector de Business Intelligence Conosur de la ONU del que usted forma parte.
 
