@@ -1,15 +1,11 @@
 library(googlesheets4)
-
-# Link al archivo
 url="https://docs.google.com/spreadsheets/d/1Kwl4KByOv8q2kXMsgaO3d5QI3vUQ40RCZJgJHhg5bmE/edit?pli=1&gid=1481484702#gid=1481484702"
-
-# Evito loggeo
 gs4_deauth()
 
-# Leo el archivo y almaceno los datos en un data frame
+# Leo el archivo y solo lee la pagina 2
 datos <- read_sheet(url, skip = 1,sheet=2)
 
-# Definimos el orden lógico de menor a mayor
+#Orden logico
 niveles_orden <- c("Muy bajo", "Bajo", "Medio", "Alto", "Muy alto")
 names(datos)[18] <- "dim_mejor_punt"
 
@@ -29,7 +25,8 @@ datos$privado        <- as.factor(datos$privado)
 datos$dim_mejor_punt <- as.factor(datos$dim_mejor_punt)
 datos$tipo_academia_es <- as.factor(datos$tipo_academia_es)
 datos$tipo_privado_es  <- as.factor(datos$tipo_privado_es)
-# Ahora probá correr el summary de nuevo
-summary(datos)
 
+
+#Leo los datos
+summary(datos)
 str(datos)
