@@ -1,11 +1,71 @@
-# Instalo los paquetes necesarios (si aún no los tengo instalados)
-# install.packages("tidyverse")
-
 # Cargo los paquetes que voy a usar
 library(tidyverse)
 
+# Sacamos las columnas:
+# Iso (2), Country (3), UN_subregion (7), tipo_academia_en (34) y tipo_privado_en (37)
+datos <- datos[, -c(2,3, 7, 34, 37)]
+
+# Columnas 34
+colnames(datos) <- c(
+  "ranking", "pais", "region_girai", "region_onu", 
+  "indice_girai", "marcos_norm", "acciones_gob", "actores_no_est", 
+  "ddhh", "gobernanza", "capacidades", 
+  "nivel_marcos", "nivel_acciones", "nivel_actores", "dim_mejor_punt",
+  "p70_sesgo", "p70_infancia", "p70_diversidad", "p70_datos", "p70_genero", 
+  "p70_supervision", "p70_laboral", "p70_seguridad", "p70_transparencia",
+  "cant_areas_marcos", "cant_areas_acciones", "cant_areas_parlam", 
+  "cant_areas_concien", "cant_areas_actores",
+  "academia_presencia", "tipo_academia", "privado_presencia", "tipo_privado"
+)
+
+# CONVERSIÓN DE CATEGORÍAS
+datos$region_girai      <- as.factor(datos$region_girai)
+datos$region_onu        <- as.factor(datos$region_onu)
+datos$dim_mejor_punt    <- as.factor(datos$dim_mejor_punt)
+datos$academia_presencia <- as.factor(datos$academia_presencia)
+datos$privado_presencia  <- as.factor(datos$privado_presencia)
+datos$tipo_academia     <- as.factor(datos$tipo_academia)
+datos$tipo_privado      <- as.factor(datos$tipo_privado)
+
+# ORDEN LÓGICO
+niveles_logicos <- c("Muy bajo", "Bajo", "Medio", "Alto", "Muy alto")
+
+datos$nivel_marcos   <- factor(datos$nivel_marcos, levels = niveles_logicos, ordered = TRUE)
+datos$nivel_acciones <- factor(datos$nivel_acciones, levels = niveles_logicos, ordered = TRUE)
+datos$nivel_actores  <- factor(datos$nivel_actores, levels = niveles_logicos, ordered = TRUE)
+
+# VERIFICACIÓN
+summary(datos)
+
+
+
+#----------------------------------------------------------------------------------
+#------------------------------GRAFICOS SECCION 2----------------------------------
+#----------------------------------------------------------------------------------
 # Fijo el dataset
 attach(datos)
+
+#Frecuencias
+tabla_nom <- table(datos$GIRAI_region)
+tabla_ordenada <- sort(tabla_nom, decreasing = TRUE)
+#Ampliamos los márgenes
+par(mar = c(5, 9, 4, 2) + 0.1)
+# Gráfico
+barplot(tabla_ordenada, 
+        main = "Distribución por Región (GIRAI)",
+        las = 1,
+        horiz = TRUE,
+        xlab = "Cantidad de Países",
+        cex.names = 0.75,           
+        cex.axis = 0.9)
+#Reajustamos los márgenes
+par(mar = c(5, 4, 4, 2) + 0.1)
+
+
+
+#----------------------------------------------------------------------------------
+#---------------------------------REPOSITORIO TP-----------------------------------
+#----------------------------------------------------------------------------------
 
 ######################
 # Renombrar columnas #
