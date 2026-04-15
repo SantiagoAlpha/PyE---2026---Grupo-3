@@ -46,8 +46,8 @@ summary(datos)
 attach(datos)
 
 #Frecuencias
-tabla_nom <- table(datos$GIRAI_region)
-tabla_ordenada <- sort(tabla_nom, decreasing = TRUE)
+tabla_nom <- table(datos$region_girai)
+tabla_ordenada <- sort(tabla_nom, decreasing = FALSE)
 #Ampliamos los márgenes
 par(mar = c(5, 9, 4, 2) + 0.1)
 # Gráfico
@@ -57,7 +57,8 @@ barplot(tabla_ordenada,
         horiz = TRUE,
         xlab = "Cantidad de Países",
         cex.names = 0.75,           
-        cex.axis = 0.9)
+        cex.axis = 0.9,
+        xlim = c(0, 50))
 #Reajustamos los márgenes
 par(mar = c(5, 4, 4, 2) + 0.1)
 
