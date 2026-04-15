@@ -1,89 +1,115 @@
-# Instalo los paquetes necesarios (si aún no los tengo instalados)
-# install.packages("tidyverse")
-# install.packages("janitor")
+# ==============================================================================
+# Archivo: 02-analisis-tablas.R
+# Objetivo: Tablas de frecuencia univariadas
+# ==============================================================================
 
-# Cargo los paquetes que voy a usar
 library(tidyverse)
-library(janitor)
 
-# Fijo el dataset
-attach(datos_limpios)
+# 1. VARIABLE CATEGÓRICA NOMINAL: region_girai
+# Cantidad de países por región (ni) y porcentaje (fi)
+tabla_region <- datos %>%
+  count(region_girai, name = "ni") %>%
+  mutate(
+    fi = ni / sum(ni),
+    porcentaje = round(fi * 100, 2)
+  )
 
-###########################
-# Tablas usando tidyverse #
-###########################
-
-# Frecuencias
-datos_limpios %>% group_by(tiempo) %>%
-	summarize(cant = n())
-
-# Medidas resumen por grupo
-datos_limpios %>% group_by(especie) %>%
-	summarize(altura_media = mean(altura),
-						altura_ds = sd(altura))
-
-# Variable de respuesta múltiple
-datos_limpios %>%
-	
-	mutate(
-		alguna = atracnosis + roya + manchas + ampollas,
-		ninguna = ifelse(alguna == 0, 1, 0)
-	) %>%
-	
-	summarize(atracnosis = sum(atracnosis),
-						roya = sum(roya),
-						manchas = sum(manchas),
-						ampollas = sum(ampollas),
-						ninguna = sum(ninguna)) %>%
-		
-	# Paso la tabla de formato horizontal a vertical
-	pivot_longer(cols = c(atracnosis, roya, manchas, ampollas, ninguna),
-							 names_to = "plaga",
-							 values_to = "cant") %>%
-	
-	# Agrego columna con porcentajes
-	mutate(
-		porc = paste0(round( cant / nrow(datos_limpios) * 100, 2),"%")
-	) %>%
-	
-	# Ordeno por frecuencia del fenómeno
-	arrange(desc(cant))
+print("--- Tabla: Países por Región ---")
+print(tabla_region)
 
 
-#########################
-# Tablas usando janitor #
-#########################
+# 2. VARIABLES CATEGÓRICAS ORDINALES: nivel_acciones y nivel_actores
+# Análisis general con frecuencias acumuladas (Ni, Fi)
+tabla_nivel_acciones <- datos %>%
+  count(nivel_acciones, name = "ni") %>%
+  mutate(
+    fi = ni / sum(ni),
+    Ni = cumsum(ni),
+    Fi = cumsum(fi),
+    porcentaje = round(fi * 100, 2)
+  )
 
-# Tabla de distribución de frecuencias
-tabla <- tabyl(especie)
+tabla_nivel_actores <- datos %>%
+  count(nivel_actores, name = "ni") %>%
+  mutate(
+    fi = ni / sum(ni),
+    Ni = cumsum(ni),
+    Fi = cumsum(fi),
+    porcentaje = round(fi * 100, 2)
+  )
 
-# Adorns
-tabla %>% 
-	rename(   # Renombro columnas
-		"Especie" = especie,
-		"Cant. árboles" = n,
-		"% árboles" = percent
-	) %>% 
-	adorn_totals() %>%  # Agrego fila de totales
-	adorn_pct_formatting(digits = 1) # Cant. de decimales en %
-	
-	
-# Tabla de contingencia
-tabyl(datos, origen, follaje) %>%
-	adorn_totals(where = c("row", "col")) %>%
-	adorn_percentages(denominator = "row") %>% # Distribuciones condicionales
-	adorn_pct_formatting(digits = 1) %>%
-	adorn_title(placement = "top", "Origen", "Tipo de follaje")
+print("--- Nivel de Acciones Gubernamentales ---")
+print(tabla_nivel_acciones)
+
+print("--- Nivel de Actores No Estatales ---")
+print(tabla_nivel_actores)
+
+# 3. VARIABLES CUANTITATIVAS CONTINUAS: Análisis de Sensibilidad (Intervalos)
+#Intervalos (Amplitud = 10)
+
+tabla_marcos <- datos %>%
+  mutate(intervalos = cut(marcos_norm, breaks = seq(0, 100, by = 10), include.lowest = TRUE)) %>%
+  count(intervalos, name = "ni") %>%
+  mutate(fi = ni / sum(ni), Ni = cumsum(ni), Fi = cumsum(fi))
+
+tabla_acciones <- datos %>%
+  mutate(intervalos = cut(acciones_gob, breaks = seq(0, 100, by = 10), include.lowest = TRUE)) %>%
+  count(intervalos, name = "ni") %>%
+  mutate(fi = ni / sum(ni), Ni = cumsum(ni), Fi = cumsum(fi))
+
+print("--- Marcos Normativos ---")
+print(tabla_marcos)
+
+print("--- Acciones de Gobierno: ---")
+print(tabla_acciones)
 
 
-# Variable cuantitativa
-tabyl(altura_int) %>%
-	mutate(
-		"Cant. acumulada" = cumsum(n),
-		"% acumulado" = cumsum(percent)
-	) %>% 
-	rename(
-		"Altura" = altura_int,
-		"Cant. árboles" = n, 
-		"% árboles" = percent
-	)
+# 4. VARIABLES CUANTITATIVAS DISCRETAS (Conteos de áreas)
+
+
+# Cantidad de Áreas en Acciones
+tabla_cant_acciones <- datos %>%
+  count(cant_areas_acciones, name = "ni") %>%
+  mutate(
+    fi = ni / sum(ni),
+    Ni = cumsum(ni),
+    Fi = cumsum(fi),
+    porcentaje = round(fi * 100, 2)
+  )
+
+#Cantidad de Áreas en Actores
+tabla_cant_actores <- datos %>%
+  count(cant_areas_actores, name = "ni") %>%
+  mutate(
+    fi = ni / sum(ni),
+    Ni = cumsum(ni),
+    Fi = cumsum(fi),
+    porcentaje = round(fi * 100, 2)
+  )
+
+print("--- Cantidad de Áreas (Acciones) ---")
+print(tabla_cant_acciones)
+
+print("--- Cantidad de Áreas (Actores) ---")
+print(tabla_cant_actores)
+
+
+
+# 5. VARIABLE DE RESPUESTA MÚLTIPLE (Indicadores p70)
+
+
+# Creamos una tabla resumen
+tabla_p70_multiple <- datos %>%
+  summarise(
+    Datos = sum(p70_datos == 1, na.rm = TRUE),
+    Seguridad = sum(p70_seguridad == 1, na.rm = TRUE),
+    Transparencia = sum(p70_transparencia == 1, na.rm = TRUE)
+  ) %>%
+  pivot_longer(cols = everything(), names_to = "Caracteristica", values_to = "ni") %>%
+  mutate(
+    fi = ni / nrow(datos), # Proporción de países sobre el total que cumplen
+    porcentaje = round(fi * 100, 2)
+  )
+
+print("--- Indicadores p70 ---")
+print(tabla_p70_multiple)
