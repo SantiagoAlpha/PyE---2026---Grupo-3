@@ -44,41 +44,7 @@ grafico_box_capacidades <- ggplot(datos, aes(x = region_girai, y = capacidades))
 # GRAFICOS BIVARIADOS: Categoría vs. Categórica
 # ==============================================================================
 
-# Gráfico: Relación Región y Nivel de Acciones
-grafico_biv_acciones <- ggplot(datos, aes(x = region_girai, fill = nivel_acciones)) +
-  geom_bar(position = "fill", color = "black") + # 'fill' estandariza al 100%
-  scale_fill_grey(start = 0.9, end = 0.2) +      # Escala de grises: claro a oscuro
-  theme_minimal() +
-  labs(
-    title = "Distribución del Nivel de Acciones por Región",
-    subtitle = "Análisis proporcional del desarrollo gubernamental en IA",
-    x = "Región",
-    y = "Proporción (0 a 1)",
-    fill = "Nivel de Acciones"
-  ) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-
-# Gráfico: Relación Región y Nivel de Actores
-grafico_biv_actores <- ggplot(datos, aes(x = region_girai, fill = nivel_actores)) +
-  geom_bar(position = "fill", color = "black") +
-  scale_fill_grey(start = 0.9, end = 0.2) +
-  theme_minimal() +
-  labs(
-    title = "Distribución del Nivel de Actores por Región",
-    subtitle = "Análisis proporcional de la participación no estatal",
-    x = "Región",
-    y = "Proporción (0 a 1)",
-    fill = "Nivel de Actores"
-  ) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-
-
-
-
-
-# 1. Gráfico: Barras Múltiples de Acciones por Región
+# Acciones por Región
 grafico_biv_acciones_mult <- ggplot(datos, aes(x = region_girai, fill = nivel_acciones)) +
   geom_bar(position = "dodge", color = "black") + # 'dodge' pone las barras una al lado de la otra
   scale_fill_grey(start = 0.9, end = 0.2) +        # Mantenemos la estética sobria
@@ -95,7 +61,7 @@ grafico_biv_acciones_mult <- ggplot(datos, aes(x = region_girai, fill = nivel_ac
     legend.position = "bottom"
   )
 
-# 2. Gráfico: Barras Múltiples de Actores por Región
+# Actores por Región
 grafico_biv_actores_mult <- ggplot(datos, aes(x = region_girai, fill = nivel_actores)) +
   geom_bar(position = "dodge", color = "black") +
   scale_fill_grey(start = 0.9, end = 0.2) +
@@ -112,9 +78,8 @@ grafico_biv_actores_mult <- ggplot(datos, aes(x = region_girai, fill = nivel_act
     legend.position = "bottom"
   )
 
-# Para ver los gráficos
-print(grafico_biv_acciones_mult)
-print(grafico_biv_actores_mult)
+
+
 
 # ==============================================================================
 #  Print de Graficos
@@ -123,5 +88,5 @@ print(grafico_biv_actores_mult)
 print(grafico_box_acciones)
 print(grafico_box_actores)
 print(grafico_box_capacidades)
-print(grafico_biv_acciones)
-print(grafico_biv_actores)
+print(grafico_biv_acciones_mult)
+print(grafico_biv_actores_mult)
