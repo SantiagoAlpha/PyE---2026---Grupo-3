@@ -75,12 +75,9 @@ grafico_biv_actores <- ggplot(datos, aes(x = region_girai, fill = nivel_actores)
   ) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-
-
-
-
-
-
+# ==============================================================================
+#  Print de Graficos
+# ==============================================================
 
 print(grafico_box_acciones)
 print(grafico_box_actores)
