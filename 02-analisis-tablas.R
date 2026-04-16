@@ -1,12 +1,13 @@
 # ==============================================================================
 # Archivo: 02-analisis-tablas.R
-# Objetivo: Tablas de frecuencia univariadas
 # ==============================================================================
 
 library(tidyverse)
 
-# 1. VARIABLE CATEGÓRICA NOMINAL: region_girai
-# Cantidad de países por región (ni) y porcentaje (fi)
+# =============================================================================
+# VARIABLE CATEGÓRICA NOMINAL
+# =============================================================================
+
 tabla_region <- datos %>%
   count(region_girai, name = "ni") %>%
   mutate(
@@ -17,9 +18,10 @@ tabla_region <- datos %>%
 print("--- Tabla: Países por Región ---")
 print(tabla_region)
 
+# =============================================================================
+# VARIABLES CATEGÓRICAS ORDINALES
+# =============================================================================
 
-# 2. VARIABLES CATEGÓRICAS ORDINALES: nivel_acciones y nivel_actores
-# Análisis general con frecuencias acumuladas (Ni, Fi)
 tabla_nivel_acciones <- datos %>%
   count(nivel_acciones, name = "ni") %>%
   mutate(
@@ -44,8 +46,10 @@ print(tabla_nivel_acciones)
 print("--- Nivel de Actores No Estatales ---")
 print(tabla_nivel_actores)
 
-# 3. VARIABLES CUANTITATIVAS CONTINUAS: Análisis de Sensibilidad (Intervalos)
-#Intervalos (Amplitud = 10)
+
+# =============================================================================
+# VARIABLES CUANTITATIVAS CONTINUAS
+# =============================================================================
 
 tabla_marcos <- datos %>%
   mutate(intervalos = cut(marcos_norm, breaks = seq(0, 100, by = 10), include.lowest = TRUE)) %>%
@@ -57,14 +61,25 @@ tabla_acciones <- datos %>%
   count(intervalos, name = "ni") %>%
   mutate(fi = ni / sum(ni), Ni = cumsum(ni), Fi = cumsum(fi))
 
+tabla_actores <- datos %>% 
+  mutate(intervalos = cut(actores_no_est, breaks = seq(0, 100, by = 10), include.lowest = TRUE)) %>% 
+  count(intervalos, name = "ni") %>%
+  mutate(fi = ni / sum(ni), Ni = cumsum(ni), Fi = cumsum(fi))
+
 print("--- Marcos Normativos ---")
 print(tabla_marcos)
 
 print("--- Acciones de Gobierno: ---")
 print(tabla_acciones)
 
+print("--- Acciones de Actores No Gubernamentales: ---")
+print(tabla_actores)
 
-# 4. VARIABLES CUANTITATIVAS DISCRETAS (Conteos de áreas)
+
+# =============================================================================
+#  VARIABLES CUANTITATIVAS DISCRETAS
+# =============================================================================
+
 
 
 # Cantidad de Áreas en Acciones
@@ -95,8 +110,9 @@ print(tabla_cant_actores)
 
 
 
-# 5. VARIABLE DE RESPUESTA MÚLTIPLE (Indicadores p70)
-
+# =============================================================================
+# VARIABLE DE RESPUESTA MÚLTIPLE 
+# =============================================================================
 
 # Creamos una tabla resumen
 tabla_p70_multiple <- datos %>%
@@ -166,8 +182,6 @@ tabla_biv_acciones <- datos %>%
     porcentaje = round(fi * 100, 2)
   )
 
-print("--- Proporción de Niveles de Acciones por Región ---")
-print(tabla_biv_acciones)
 
 
 # 2. Tabla: Región vs. Nivel de Actores
@@ -179,5 +193,9 @@ tabla_biv_actores <- datos %>%
     porcentaje = round(fi * 100, 2)
   )
 
+
+
+print("--- Proporción de Niveles de Acciones por Región ---")
+print(tabla_biv_acciones)
 print("--- Proporción de Niveles de Actores por Región ---")
 print(tabla_biv_actores)

@@ -50,6 +50,15 @@ grafico_acciones_hist <- ggplot(datos, aes(x = acciones_gob)) +
   )
 
 
+# Histograma: Actores No Estatales
+grafico_actores_hist <- ggplot(datos, aes(x = actores_no_est)) +
+  geom_histogram(bins = 10, fill = "gray90", color = "black", boundary = 0) +
+  theme_minimal() +
+  labs(title = "Distribución: Actores No Estatales", 
+       x = "Puntaje (0-100)", 
+       y = "Frecuencia")
+
+
 
 # ==============================================================================
 #  VARIABLES CUANTITATIVAS DISCRETAS
@@ -141,6 +150,7 @@ grafico_p70 <- ggplot(tabla_p70_multiple, aes(x = reorder(Caracteristica, -porce
 print(grafico_nominal)
 print(grafico_marcos_hist)
 print(grafico_acciones_hist)
+print(grafico_actores_hist)
 print(grafico_cant_acciones)
 print(grafico_cant_actores)
 print(grafico_nivel_acciones)

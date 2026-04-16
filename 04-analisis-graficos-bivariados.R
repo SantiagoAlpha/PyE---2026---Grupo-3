@@ -44,7 +44,7 @@ grafico_box_capacidades <- ggplot(datos, aes(x = region_girai, y = capacidades))
 # GRAFICOS BIVARIADOS: Categoría vs. Categórica
 # ==============================================================================
 
-# 1. Gráfico: Relación Región y Nivel de Acciones
+# Gráfico: Relación Región y Nivel de Acciones
 grafico_biv_acciones <- ggplot(datos, aes(x = region_girai, fill = nivel_acciones)) +
   geom_bar(position = "fill", color = "black") + # 'fill' estandariza al 100%
   scale_fill_grey(start = 0.9, end = 0.2) +      # Escala de grises: claro a oscuro
@@ -59,9 +59,7 @@ grafico_biv_acciones <- ggplot(datos, aes(x = region_girai, fill = nivel_accione
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 
-
-
-# 2. Gráfico: Relación Región y Nivel de Actores
+# Gráfico: Relación Región y Nivel de Actores
 grafico_biv_actores <- ggplot(datos, aes(x = region_girai, fill = nivel_actores)) +
   geom_bar(position = "fill", color = "black") +
   scale_fill_grey(start = 0.9, end = 0.2) +

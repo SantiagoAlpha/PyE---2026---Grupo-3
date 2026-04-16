@@ -1,6 +1,5 @@
 # ==============================================================================
 # Archivo: 01-manipulacion.R
-# Objetivo: Limpieza, renombrado y corrección de tipos de datos
 # ==============================================================================
 
 library(tidyverse)
