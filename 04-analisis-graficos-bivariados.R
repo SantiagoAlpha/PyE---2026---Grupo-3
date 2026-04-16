@@ -73,6 +73,49 @@ grafico_biv_actores <- ggplot(datos, aes(x = region_girai, fill = nivel_actores)
   ) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
+
+
+
+
+
+# 1. Gráfico: Barras Múltiples de Acciones por Región
+grafico_biv_acciones_mult <- ggplot(datos, aes(x = region_girai, fill = nivel_acciones)) +
+  geom_bar(position = "dodge", color = "black") + # 'dodge' pone las barras una al lado de la otra
+  scale_fill_grey(start = 0.9, end = 0.2) +        # Mantenemos la estética sobria
+  theme_minimal() +
+  labs(
+    title = "Comparativa de Cantidad de Países por Nivel de Acción",
+    subtitle = "Distribución regional de acciones gubernamentales",
+    x = "Región",
+    y = "Cantidad de Países",
+    fill = "Nivel de Acciones"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "bottom"
+  )
+
+# 2. Gráfico: Barras Múltiples de Actores por Región
+grafico_biv_actores_mult <- ggplot(datos, aes(x = region_girai, fill = nivel_actores)) +
+  geom_bar(position = "dodge", color = "black") +
+  scale_fill_grey(start = 0.9, end = 0.2) +
+  theme_minimal() +
+  labs(
+    title = "Comparativa de Cantidad de Países por Nivel de Actores",
+    subtitle = "Participación de academia y sector privado por región",
+    x = "Región",
+    y = "Cantidad de Países",
+    fill = "Nivel de Actores"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "bottom"
+  )
+
+# Para ver los gráficos
+print(grafico_biv_acciones_mult)
+print(grafico_biv_actores_mult)
+
 # ==============================================================================
 #  Print de Graficos
 # ==============================================================
