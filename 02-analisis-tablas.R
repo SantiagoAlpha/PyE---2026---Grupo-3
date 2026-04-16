@@ -113,3 +113,71 @@ tabla_p70_multiple <- datos %>%
 
 print("--- Indicadores p70 ---")
 print(tabla_p70_multiple)
+
+# ==============================================================================
+# Categorica con Cuantitativa
+# ==============================================================================
+
+# 1. Tabla: Acciones de Gobierno por Región
+tabla_resumen_acciones <- datos %>%
+  group_by(region_girai) %>%
+  summarise(
+    n = n(),
+    Media = round(mean(acciones_gob, na.rm = TRUE), 2),
+    Mediana = round(median(acciones_gob, na.rm = TRUE), 2),
+    Desvio = round(sd(acciones_gob, na.rm = TRUE), 2)
+  )
+
+# 2. Tabla: Actores No Estatales por Región
+tabla_resumen_actores <- datos %>%
+  group_by(region_girai) %>%
+  summarise(
+    n = n(),
+    Media = round(mean(actores_no_est, na.rm = TRUE), 2),
+    Mediana = round(median(actores_no_est, na.rm = TRUE), 2),
+    Desvio = round(sd(actores_no_est, na.rm = TRUE), 2)
+  )
+
+# 3. Tabla: Capacidades por Región
+tabla_resumen_capacidades <- datos %>%
+  group_by(region_girai) %>%
+  summarise(
+    n = n(),
+    Media = round(mean(capacidades, na.rm = TRUE), 2),
+    Mediana = round(median(capacidades, na.rm = TRUE), 2),
+    Desvio = round(sd(capacidades, na.rm = TRUE), 2)
+  )
+
+print(tabla_resumen_acciones)
+print(tabla_resumen_actores)
+print(tabla_resumen_capacidades)
+
+
+# ==============================================================================
+# Categoría vs. Categórica
+# ==============================================================================
+
+# 1. Tabla: Región vs. Nivel de Acciones
+tabla_biv_acciones <- datos %>%
+  count(region_girai, nivel_acciones) %>%
+  group_by(region_girai) %>%
+  mutate(
+    fi = n / sum(n),
+    porcentaje = round(fi * 100, 2)
+  )
+
+print("--- Proporción de Niveles de Acciones por Región ---")
+print(tabla_biv_acciones)
+
+
+# 2. Tabla: Región vs. Nivel de Actores
+tabla_biv_actores <- datos %>%
+  count(region_girai, nivel_actores) %>%
+  group_by(region_girai) %>%
+  mutate(
+    fi = n / sum(n),
+    porcentaje = round(fi * 100, 2)
+  )
+
+print("--- Proporción de Niveles de Actores por Región ---")
+print(tabla_biv_actores)
