@@ -1,4 +1,9 @@
+#install.packages(c("tidyverse", "janitor", "scales", "summarytools"))
 # Carga de librerías
+library(tidyverse)    
+library(janitor)     
+library(scales)      
+library(summarytools) 
 library(googlesheets4)
 # Configuración de acceso
 gs4_deauth()

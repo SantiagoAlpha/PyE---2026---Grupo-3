@@ -1,8 +1,31 @@
-library(tidyselect)
-library(janitor)
+
 
 # Estructura del conjunto de datos
-str(datos_limpios)
+str(datos)
+# Cálculo simple del coeficiente (r)
+# El argumento use = "complete.obs" es fundamental para omitir filas con datos faltantes (NA)
+r_ag_cap <- cor(datos$acciones_gob, datos$capacidades, use = "complete.obs")
+r_ane_cap <- cor(datos$actores_no_est, datos$capacidades, use = "complete.obs")
+
+# Imprimir resultados en consola
+cat("Correlación ag vs cap:", r_ag_cap, "\n")
+cat("Correlación ane vs cap:", r_ane_cap, "\n")
+
+# Si necesitas el p-valor para el informe de Probabilidad y Estadística:
+test_ag <- cor.test(datos$acciones_gob, datos$capacidades)
+print(test_ag)
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Algunas medidas resumen 
 summary(datos_limpios)

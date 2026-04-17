@@ -4,9 +4,9 @@
 
 # ==============================================================================
 # Categorica Nominal con Cuantitativa Continua
-# ==============================================================================
+# =============================================================================
 
-# 1. Acciones Gubernamentales por Región
+#  Acciones Gubernamentales por Región
 grafico_box_acciones <- ggplot(datos, aes(x = region_girai, y = acciones_gob)) +
   geom_boxplot(fill = "gray95", color = "black") + # Sin colores, solo gris muy claro
   theme_minimal() +
@@ -17,7 +17,7 @@ grafico_box_acciones <- ggplot(datos, aes(x = region_girai, y = acciones_gob)) +
   ) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-# 2. Actores No Estatales por Región
+#  Actores No Estatales por Región
 grafico_box_actores <- ggplot(datos, aes(x = region_girai, y = actores_no_est)) +
   geom_boxplot(fill = "gray95", color = "black") +
   theme_minimal() +
@@ -40,15 +40,90 @@ grafico_box_capacidades <- ggplot(datos, aes(x = region_girai, y = capacidades))
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 
+
+
+# BOXPLOT: CAPACIDAD VS. INICIATIVAS ACADÉMICAS
+
+# Preparación de datos
+datos_box_acad <- datos %>%
+  mutate(tipo_academia = as.character(tipo_academia)) %>%
+  mutate(tipo_academia = gsub("éticas, normas", "éticas y normas", tipo_academia)) %>%
+  mutate(tipo_academia = replace_na(tipo_academia, "Sin iniciativas académicas")) %>%
+  separate_rows(tipo_academia, sep = ",\\s*") %>%
+  filter(!is.na(capacidades))
+
+datos_acad_cap <- ggplot(datos_box_acad, aes(x = reorder(tipo_academia, capacidades, FUN = median, na.rm = TRUE), y = capacidades)) +
+  # Boxplot con colores azules
+  geom_boxplot(fill = "steelblue", color = "darkblue", alpha = 0.7, outlier.shape = 16) +
+  coord_flip() + 
+  labs(
+    title = "Capacidad según Iniciativas Académicas",
+    subtitle = "Distribución del puntaje de capacidad por tipo de actividad",
+    x = "Tipo de Iniciativa",
+    y = "Nivel de Capacidad (cap)"
+  ) +
+  theme_minimal(base_size = 16) +
+  theme(
+    plot.title = element_text(size = 22, face = "bold"),
+    axis.title.x = element_text(size = 18),
+    axis.title.y = element_text(size = 18),
+    axis.text.x = element_text(size = 14),
+    axis.text.y = element_text(size = 12, face = "bold"),
+    panel.grid.minor = element_blank()
+  )
+
+
+#  BOXPLOT: CAPACIDAD VS. INICIATIVAS PRIVADAS
+
+# Preparación de datos
+datos_box_priv <- datos %>%
+  mutate(tipo_privado = as.character(tipo_privado)) %>%
+  mutate(tipo_privado = gsub("éticas, normas", "éticas y normas", tipo_privado)) %>%
+  mutate(tipo_privado = replace_na(tipo_privado, "Sin iniciativas privadas")) %>%
+  separate_rows(tipo_privado, sep = ",\\s*") %>%
+  filter(!is.na(capacidades))
+
+datos_priv_cap <- ggplot(datos_box_priv, aes(x = reorder(tipo_privado, capacidades, FUN = median, na.rm = TRUE), y = capacidades)) +
+  # Boxplot con colores azules
+  geom_boxplot(fill = "steelblue", color = "darkblue", alpha = 0.7, outlier.shape = 16) +
+  coord_flip() + 
+  labs(
+    title = "Capacidad según Iniciativas Privadas",
+    subtitle = "Distribución del puntaje de capacidad por tipo de actividad",
+    x = "Tipo de Iniciativa",
+    y = "Nivel de Capacidad (cap)"
+  ) +
+  theme_minimal(base_size = 16) +
+  theme(
+    plot.title = element_text(size = 22, face = "bold"),
+    axis.title.x = element_text(size = 18),
+    axis.title.y = element_text(size = 18),
+    axis.text.x = element_text(size = 14),
+    axis.text.y = element_text(size = 12, face = "bold"),
+    panel.grid.minor = element_blank()
+  )
+
+
+
+
+
+
+
+
+
+
+
+
 # ==============================================================================
 # GRAFICOS BIVARIADOS: Categoría vs. Categórica
 # ==============================================================================
 
-# Acciones por Región
 grafico_biv_acciones_mult <- ggplot(datos, aes(x = region_girai, fill = nivel_acciones)) +
-  geom_bar(position = "dodge", color = "black") + # 'dodge' pone las barras una al lado de la otra
-  scale_fill_grey(start = 0.9, end = 0.2) +        # Mantenemos la estética sobria
-  theme_minimal() +
+  # 'dodge' pone las barras una al lado de la otra
+  geom_bar(position = "dodge", color = "darkblue", alpha = 0.9) + 
+  
+  # Esta es la clave: Paleta de azules secuencial
+  scale_fill_brewer(palette = "Blues") +
   labs(
     title = "Comparativa de Cantidad de Países por Nivel de Acción",
     subtitle = "Distribución regional de acciones gubernamentales",
@@ -56,27 +131,82 @@ grafico_biv_acciones_mult <- ggplot(datos, aes(x = region_girai, fill = nivel_ac
     y = "Cantidad de Países",
     fill = "Nivel de Acciones"
   ) +
+  theme_minimal(base_size = 16) +
   theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    legend.position = "bottom"
+    plot.title = element_text(size = 22, face = "bold"),
+    axis.title.x = element_text(size = 18),
+    axis.title.y = element_text(size = 18),
+    axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
+    axis.text.y = element_text(size = 14)
   )
 
-# Actores por Región
-grafico_biv_actores_mult <- ggplot(datos, aes(x = region_girai, fill = nivel_actores)) +
-  geom_bar(position = "dodge", color = "black") +
-  scale_fill_grey(start = 0.9, end = 0.2) +
-  theme_minimal() +
+ grafico_biv_actores_mult <- ggplot(datos, aes(x = region_girai, fill = nivel_actores)) +
+   # 'dodge' pone las barras una al lado de la otra
+   geom_bar(position = "dodge", color = "darkblue", alpha = 0.9) + 
+   
+   # Esta es la clave: Paleta de azules secuencial
+   scale_fill_brewer(palette = "Blues") +
+   labs(
+     title = "Comparativa de Cantidad de Países por Nivel de Actores",
+     subtitle = "Distribución regional de acciones no estatales",
+     x = "Región",
+     y = "Cantidad de Países",
+     fill = "Nivel de Actores"
+   ) +
+   theme_minimal(base_size = 16) +
+   theme(
+     plot.title = element_text(size = 22, face = "bold"),
+     axis.title.x = element_text(size = 18),
+     axis.title.y = element_text(size = 18),
+     axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
+     axis.text.y = element_text(size = 14)
+   )
+ 
+ 
+
+# ==============================================================================
+# Cuantitativa Continua con Cuantitativa Continua
+# ==============================================================================
+
+
+# Capacidades versus actores no estatales
+CAPyANE <- ggplot(filter(datos,), aes(x = actores_no_est, y = capacidades)) +
+  geom_point(color = "steelblue", alpha = 0.6, size = 3) +
+  geom_smooth(method = "lm", color = "black", se = FALSE) +
   labs(
-    title = "Comparativa de Cantidad de Países por Nivel de Actores",
-    subtitle = "Participación de academia y sector privado por región",
-    x = "Región",
-    y = "Cantidad de Países",
-    fill = "Nivel de Actores"
+    title = "Relación entre Acciones no Estatales y Capacidad",
+    x = "Acciones no estatales (ane)",
+    y = "Capacidad (cap)"
   ) +
+  theme_minimal(base_size = 16) +
   theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    legend.position = "bottom"
+    plot.title = element_text(size = 22, face = "bold"),
+    axis.title.x = element_text(size = 18),
+    axis.title.y = element_text(size = 18),
+    axis.text.x = element_text(size = 14),
+    axis.text.y = element_text(size = 14)
   )
+
+# Capacidad versus acciones gubernamentales
+CAPyAG <-ggplot(filter(datos,), aes(x = acciones_gob, y = capacidades)) +
+  geom_point(color = "steelblue", alpha = 0.6, size = 3) +
+  geom_smooth(method = "lm", color = "black", se = FALSE) +
+  labs(
+    title = "Relación entre Acciones Gubernamentales y Capacidad",
+    x = "Acciones gubernamentales (ag)",
+    y = "Capacidad (cap)"
+  ) +
+  theme_minimal(base_size = 16) +
+  theme(
+    plot.title = element_text(size = 22, face = "bold"),
+    axis.title.x = element_text(size = 18),
+    axis.title.y = element_text(size = 18),
+    axis.text.x = element_text(size = 14),
+    axis.text.y = element_text(size = 14)
+  )
+
+
+
 
 
 
@@ -85,8 +215,18 @@ grafico_biv_actores_mult <- ggplot(datos, aes(x = region_girai, fill = nivel_act
 #  Print de Graficos
 # ==============================================================
 
+
+#Prioridad
+
+print(CAPyANE)
+print(CAPyAG)
+print(grafico_biv_acciones_mult)
+print(grafico_biv_actores_mult)
+print(datos_acad_cap)
+print(datos_priv_cap)
+#------------------------------------------
+
+
 print(grafico_box_acciones)
 print(grafico_box_actores)
 print(grafico_box_capacidades)
-print(grafico_biv_acciones_mult)
-print(grafico_biv_actores_mult)
