@@ -6,44 +6,59 @@
 # Categorica Nominal con Cuantitativa Continua
 # =============================================================================
 
-#  Acciones Gubernamentales por Región
+# Acciones Gubernamentales por Región
 grafico_box_acciones <- ggplot(datos, aes(x = region_girai, y = acciones_gob)) +
-  geom_boxplot(fill = "gray95", color = "black") + # Sin colores, solo gris muy claro
-  theme_minimal() +
+  geom_boxplot(fill = "steelblue", alpha = 0.5, color = "darkblue", outlier.colour = "black") +
+  theme_minimal(base_size = 16) +
   labs(
     title = "Acciones Gubernamentales según Región",
+    subtitle = "Distribución del puntaje ag por zona geográfica",
     x = "Región",
     y = "Puntaje Acciones (0-100)"
   ) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(
+    plot.title = element_text(size = 22, face = "bold"),
+    axis.title = element_text(size = 18),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 12),
+    axis.text.y = element_text(size = 14)
+  )
 
-#  Actores No Estatales por Región
+# Actores No Estatales por Región
 grafico_box_actores <- ggplot(datos, aes(x = region_girai, y = actores_no_est)) +
-  geom_boxplot(fill = "gray95", color = "black") +
-  theme_minimal() +
+  geom_boxplot(fill = "steelblue", alpha = 0.5, color = "darkblue", outlier.colour = "black") +
+  theme_minimal(base_size = 16) +
   labs(
     title = "Participación de Actores No Estatales por Región",
+    subtitle = "Distribución del puntaje ane por zona geográfica",
     x = "Región",
     y = "Puntaje Actores (0-100)"
   ) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(
+    plot.title = element_text(size = 22, face = "bold"),
+    axis.title = element_text(size = 18),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 12),
+    axis.text.y = element_text(size = 14)
+  )
 
-# 3. Capacidades por Región
+# Capacidades por Región
 grafico_box_capacidades <- ggplot(datos, aes(x = region_girai, y = capacidades)) +
-  geom_boxplot(fill = "gray95", color = "black") +
-  theme_minimal() +
+  geom_boxplot(fill = "steelblue", alpha = 0.5, color = "darkblue", outlier.colour = "black") +
+  theme_minimal(base_size = 16) +
   labs(
     title = "Capacidades de IA por Región",
+    subtitle = "Distribución del puntaje cap por zona geográfica",
     x = "Región",
     y = "Puntaje Capacidades (0-100)"
   ) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-
+  theme(
+    plot.title = element_text(size = 22, face = "bold"),
+    axis.title = element_text(size = 18),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 12),
+    axis.text.y = element_text(size = 14)
+  )
 
 
 # BOXPLOT: CAPACIDAD VS. INICIATIVAS ACADÉMICAS
-
 # Preparación de datos
 datos_box_acad <- datos %>%
   mutate(tipo_academia = as.character(tipo_academia)) %>%
@@ -285,134 +300,15 @@ grafico_p70_3 <- datos %>%
 
 
 
-# =====================================================================
-#  IMPORTANTE IMPORTANTE 
-# ==============================================================
-
-# =====================================================================
-#  IMPORTANTE IMPORTANTE 
-# ==============================================================
-
-# =====================================================================
-#  IMPORTANTE IMPORTANTE 
-# ==============================================================
-
-top_15_paises <- datos %>%
-  slice_max(indice_girai, n = 15)
-
-# Definición de colores consistente
-colores_p70 <- c("No Cumple" = "gray90", "Cumple" = "steelblue")
-
-# ------------------------------------------------------------------------------
-# GRÁFICO 1: SEGURIDAD, DATOS Y LABORAL (TOP 15)
-# ------------------------------------------------------------------------------
-grafico_top15_1 <- top_15_paises %>%
-  select(capacidades, p70_seguridad, p70_datos, p70_laboral) %>%
-  pivot_longer(cols = starts_with("p70"), names_to = "Indicador", values_to = "Cumple") %>%
-  mutate(Cumple_label = factor(Cumple, levels = c(0, 1), labels = c("No Cumple", "Cumple"))) %>%
-  ggplot(aes(x = Cumple_label, y = capacidades, fill = Cumple_label)) +
-  geom_boxplot(alpha = 0.8, color = "black", outlier.size = 2, outlier.shape = 16) + 
-  facet_wrap(~Indicador, nrow = 1, labeller = as_labeller(c(
-    "p70_seguridad" = "Seguridad",
-    "p70_datos" = "Protección de Datos",
-    "p70_laboral" = "Protección Laboral"
-  ))) +
-  scale_fill_manual(values = colores_p70) +
-  theme_minimal(base_size = 16) +
-  labs(title = "Top 15: Seguridad, Datos y Laboral", x = NULL, y = "Capacidad (cap)") +
-  theme(
-    plot.title = element_text(size = 22, face = "bold"),
-    legend.position = "none",
-    strip.text = element_text(size = 16, face = "bold"),
-    axis.text.x = element_text(size = 14)
-  )
-
-# ------------------------------------------------------------------------------
-# GRÁFICO 2: SESGOS Y SUPERVISIÓN HUMANA (TOP 15)
-# ------------------------------------------------------------------------------
-grafico_top15_2 <- top_15_paises %>%
-  select(capacidades, p70_sesgo, p70_supervision) %>%
-  pivot_longer(cols = starts_with("p70"), names_to = "Indicador", values_to = "Cumple") %>%
-  mutate(Cumple_label = factor(Cumple, levels = c(0, 1), labels = c("No Cumple", "Cumple"))) %>%
-  ggplot(aes(x = Cumple_label, y = capacidades, fill = Cumple_label)) +
-  geom_boxplot(alpha = 0.8, color = "black", outlier.size = 2, outlier.shape = 16) + 
-  facet_wrap(~Indicador, nrow = 1, labeller = as_labeller(c(
-    "p70_sesgo" = "Mitigación de Sesgos",
-    "p70_supervision" = "Supervisión Humana"
-  ))) +
-  scale_fill_manual(values = colores_p70) +
-  theme_minimal(base_size = 16) +
-  labs(title = "Top 15: Sesgos y Supervisión", x = NULL, y = "Capacidad (cap)") +
-  theme(
-    plot.title = element_text(size = 22, face = "bold"),
-    legend.position = "none",
-    strip.text = element_text(size = 16, face = "bold"),
-    axis.text.x = element_text(size = 14)
-  )
-
-# ------------------------------------------------------------------------------
-# GRÁFICO 3: INFANCIA Y TRANSPARENCIA (TOP 15)
-# ------------------------------------------------------------------------------
-grafico_top15_3 <- top_15_paises %>%
-  select(capacidades, p70_infancia, p70_transparencia) %>%
-  pivot_longer(cols = starts_with("p70"), names_to = "Indicador", values_to = "Cumple") %>%
-  mutate(Cumple_label = factor(Cumple, levels = c(0, 1), labels = c("No Cumple", "Cumple"))) %>%
-  ggplot(aes(x = Cumple_label, y = capacidades, fill = Cumple_label)) +
-  geom_boxplot(alpha = 0.8, color = "black", outlier.size = 2, outlier.shape = 16) + 
-  facet_wrap(~Indicador, nrow = 1, labeller = as_labeller(c(
-    "p70_infancia" = "Derechos Infancia",
-    "p70_transparencia" = "Transparencia"
-  ))) +
-  scale_fill_manual(values = colores_p70) +
-  theme_minimal(base_size = 16) +
-  labs(title = "Top 15: Infancia y Transparencia", x = NULL, y = "Capacidad (cap)") +
-  theme(
-    plot.title = element_text(size = 22, face = "bold"),
-    legend.position = "none",
-    strip.text = element_text(size = 16, face = "bold"),
-    axis.text.x = element_text(size = 14)
-  )
-
-# --- IMPRESIÓN ---
-print(grafico_top15_1)
-print(grafico_top15_2)
-print(grafico_top15_3)
-
-
-
-# =====================================================================
-#  IMPORTANTE IMPORTANTE 
-# ==============================================================
-
-# =====================================================================
-#  IMPORTANTE IMPORTANTE 
-# ==============================================================
-
-# =====================================================================
-#  IMPORTANTE IMPORTANTE 
-# ==============================================================
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # ==============================================================================
 #  Print de Graficos
 # ==============================================================
 
 
-#Prioridad
-
+print(grafico_box_acciones)
+print(grafico_box_actores)
+print(grafico_box_capacidades)
 print(CAPyANE)
 print(CAPyAG)
 print(grafico_biv_acciones_mult)
@@ -422,10 +318,3 @@ print(datos_priv_cap)
 print(grafico_p70_1)
 print(grafico_p70_2)
 print(grafico_p70_3)
-
-#------------------------------------------
-
-
-print(grafico_box_acciones)
-print(grafico_box_actores)
-print(grafico_box_capacidades)

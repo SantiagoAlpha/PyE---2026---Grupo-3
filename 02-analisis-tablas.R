@@ -134,8 +134,6 @@ print(tabla_cant_actores)
 # =============================================================================
 
 # TABLA DE LOS P70
-
-
 tabla_p70_final <- datos %>%
   select(
     p70_seguridad, p70_datos, p70_laboral, 
@@ -159,12 +157,12 @@ tabla_p70_final <- datos %>%
   )) %>%
   arrange(desc(porcentaje))
 
-print("--- Resumen de Cumplimiento de Estándares p70 ---")
-print(tabla_p70_final)
+
 
 #TABLA PARA EL GRÁFICO UNIVARIADO
 top_20_paises <- datos %>%
   slice_max(indice_girai, n = 20)
+
 tabla_top20_p70 <- top_20_paises %>%
   select(
     p70_seguridad, p70_datos, p70_laboral, 
@@ -172,16 +170,30 @@ tabla_top20_p70 <- top_20_paises %>%
   ) %>%
   pivot_longer(cols = everything(), names_to = "Variable", values_to = "Cumple") %>%
   group_by(Variable) %>%
-  summarise(porcentaje = round(mean(Cumple) * 100, 2)) %>%
-  mutate(Variable = recode(Variable,
-                           "p70_seguridad" = "Seguridad",
-                           "p70_datos" = "Protección de Datos",
-                           "p70_laboral" = "Protección Laboral",
-                           "p70_sesgo" = "Mitigación de Sesgos",
-                           "p70_supervision" = "Supervisión Humana",
-                           "p70_infancia" = "Derechos de Infancia",
-                           "p70_transparencia" = "Transparencia"
-  ))
+  summarise(
+    n_paises_cumplen = sum(Cumple),
+    porcentaje = round((n_paises_cumplen / n()) * 100, 2)
+  ) %>%
+  arrange(desc(porcentaje)) %>%
+  mutate(
+    Variable = recode(Variable,
+                      "p70_seguridad" = "Seguridad",
+                      "p70_datos" = "Protección de Datos",
+                      "p70_laboral" = "Protección Laboral",
+                      "p70_sesgo" = "Mitigación de Sesgos",
+                      "p70_supervision" = "Supervisión Humana",
+                      "p70_infancia" = "Derechos de Infancia",
+                      "p70_transparencia" = "Transparencia")
+  )
+
+
+
+print("--- Resumen de Cumplimiento de Estándares p70 ---")
+print(tabla_p70_final)
+print("--- Resumen de Cumplimiento de Estándares p70 del TOP20 ---")
+print(tabla_top20_p70)
+
+
 
 # ==============================================================================
 # CATEGÓRICA NOMINAL VS. CUANTITATIVA CONTINUA

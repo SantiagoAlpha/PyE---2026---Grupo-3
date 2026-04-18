@@ -33,17 +33,6 @@ grafico_nominal <- ggplot(datos, aes(x = fct_infreq(region_girai))) +
 #  VARIABLES CUANTITATIVAS CONTINUAS
 # ===========================================================================
 
-# Histograma: Marcos Normativos
-grafico_marcos_hist <- ggplot(datos, aes(x = marcos_norm)) +
-  geom_histogram(bins = 10, fill = "gray90", color = "black", boundary = 0) +
-  theme_minimal() +
-  labs(
-    title = "Distribución de Puntajes: Marcos Normativos",
-    subtitle = "Análisis de 10 intervalos de clase (Amplitud = 10)",
-    x = "Puntaje (0 - 100)",
-    y = "Frecuencia (n° de países)"
-  )
-
 # Histograma: Acciones de Gobierno
 grafico_acciones_hist <- ggplot(datos, aes(x = acciones_gob)) +
   geom_histogram(bins = 10, fill = "steelblue", alpha = 0.5, color = "darkblue", boundary = 0) +
@@ -196,7 +185,7 @@ grafico_top20_p70 <- ggplot(tabla_top20_p70, aes(x = reorder(Variable, porcentaj
 #  Print de Graficos
 # ==============================================================
 
-#Prioridad
+print(grafico_nominal)
 print(grafico_acciones_hist)
 print(grafico_actores_hist)
 print(grafico_nivel_acciones)
@@ -205,10 +194,6 @@ print(grafico_cant_acciones)
 print(grafico_cant_actores)
 print(comparación_cantidad_acciones_actores)
 print(grafico_top20_p70)
-#---------------------------------------------------
-
-print(grafico_nominal)
-print(grafico_marcos_hist)
 
 
 
