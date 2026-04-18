@@ -114,21 +114,34 @@ print(tabla_cant_actores)
 # VARIABLE DE RESPUESTA MÚLTIPLE 
 # =============================================================================
 
-# Creamos una tabla resumen
-tabla_p70_multiple <- datos %>%
-  summarise(
-    Datos = sum(p70_datos == 1, na.rm = TRUE),
-    Seguridad = sum(p70_seguridad == 1, na.rm = TRUE),
-    Transparencia = sum(p70_transparencia == 1, na.rm = TRUE)
-  ) %>%
-  pivot_longer(cols = everything(), names_to = "Caracteristica", values_to = "ni") %>%
-  mutate(
-    fi = ni / nrow(datos), # Proporción de países sobre el total que cumplen
-    porcentaje = round(fi * 100, 2)
-  )
+# TABLA DE LOS P70
 
-print("--- Indicadores p70 ---")
-print(tabla_p70_multiple)
+
+tabla_p70_final <- datos %>%
+  select(
+    p70_seguridad, p70_datos, p70_laboral, 
+    p70_sesgo, p70_supervision, p70_infancia, p70_transparencia
+  ) %>%
+  pivot_longer(cols = everything(), names_to = "Variable", values_to = "Cumple") %>%
+  group_by(Variable) %>%
+  summarise(
+    n_paises = sum(Cumple, na.rm = TRUE),
+    porcentaje = round((n_paises / n()) * 100, 2)
+  ) %>%
+
+  mutate(Variable = recode(Variable,
+                           "p70_seguridad" = "Seguridad",
+                           "p70_datos" = "Protección de Datos",
+                           "p70_laboral" = "Protección Laboral",
+                           "p70_sesgo" = "Mitigación de Sesgos",
+                           "p70_supervision" = "Supervisión Humana",
+                           "p70_infancia" = "Derechos de Infancia",
+                           "p70_transparencia" = "Transparencia"
+  )) %>%
+  arrange(desc(porcentaje))
+
+print("--- Resumen de Cumplimiento de Estándares p70 ---")
+print(tabla_p70_final)
 
 # ==============================================================================
 # Categorica con Cuantitativa

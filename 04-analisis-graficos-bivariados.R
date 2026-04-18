@@ -206,8 +206,93 @@ CAPyAG <-ggplot(filter(datos,), aes(x = acciones_gob, y = capacidades)) +
   )
 
 
+# ==============================================================================
+# CUANTITATIVA CONTINUA VS VARIABLE DE RESPUESTA MÚTIPLE  
+# ==============================================================================
 
 
+
+
+
+# ==============================================================================
+# ANÁLISIS BIVARIADO: CAPACIDAD VS. ESTÁNDARES p70 (ESTILO PREMIUM)
+# ==============================================================================
+
+
+# ==============================================================================
+# ANÁLISIS BIVARIADO: CAPACIDAD VS. ESTÁNDARES p70 (ESTRUCTURA SOLICITADA)
+# ==============================================================================
+
+
+colores_p70 <- c("No Cumple" = "gray90", "Cumple" = "steelblue")
+
+# SEGURIDAD, PROTECCIÓN DE DATOS Y PROTECCIÓN LABORAL 
+grafico_p70_1 <- datos %>%
+  select(capacidades, p70_seguridad, p70_datos, p70_laboral) %>%
+  pivot_longer(cols = starts_with("p70"), names_to = "Indicador", values_to = "Cumple") %>%
+  mutate(Cumple_label = factor(Cumple, levels = c(0, 1), labels = c("No Cumple", "Cumple"))) %>%
+  ggplot(aes(x = Cumple_label, y = capacidades, fill = Cumple_label)) +
+  geom_boxplot(alpha = 0.8, color = "black", outlier.size = 2, outlier.shape = 16) + 
+  facet_wrap(~Indicador, nrow = 1, labeller = as_labeller(c(
+    "p70_seguridad" = "Seguridad",
+    "p70_datos" = "Protección de Datos",
+    "p70_laboral" = "Protección Laboral"
+  ))) +
+  scale_fill_manual(values = colores_p70) +
+  theme_minimal(base_size = 16) +
+  labs(title = "Capacidad vs. Estándares: Seguridad, Datos y Laboral", x = NULL, y = "Capacidad (cap)") +
+  theme(
+    plot.title = element_text(size = 22, face = "bold"),
+    legend.position = "none",
+    strip.text = element_text(size = 16, face = "bold"),
+    axis.text.x = element_text(size = 14)
+  )
+
+
+#  MITIGACIÓN DE SESGOS Y SUPERVISIÓN HUMANA
+
+grafico_p70_2 <- datos %>%
+  select(capacidades, p70_sesgo, p70_supervision) %>%
+  pivot_longer(cols = starts_with("p70"), names_to = "Indicador", values_to = "Cumple") %>%
+  mutate(Cumple_label = factor(Cumple, levels = c(0, 1), labels = c("No Cumple", "Cumple"))) %>%
+  ggplot(aes(x = Cumple_label, y = capacidades, fill = Cumple_label)) +
+  geom_boxplot(alpha = 0.8, color = "black", outlier.size = 2, outlier.shape = 16) + 
+  facet_wrap(~Indicador, nrow = 1, labeller = as_labeller(c(
+    "p70_sesgo" = "Mitigación de Sesgos",
+    "p70_supervision" = "Supervisión Humana"
+  ))) +
+  scale_fill_manual(values = colores_p70) +
+  theme_minimal(base_size = 16) +
+  labs(title = "Capacidad vs. Estándares: Sesgos y Supervisión", x = NULL, y = "Capacidad (cap)") +
+  theme(
+    plot.title = element_text(size = 22, face = "bold"),
+    legend.position = "none",
+    strip.text = element_text(size = 16, face = "bold"),
+    axis.text.x = element_text(size = 14)
+  )
+
+
+# DERECHOS DE INFANCIA Y TRANSPARENCIA 
+
+grafico_p70_3 <- datos %>%
+  select(capacidades, p70_infancia, p70_transparencia) %>%
+  pivot_longer(cols = starts_with("p70"), names_to = "Indicador", values_to = "Cumple") %>%
+  mutate(Cumple_label = factor(Cumple, levels = c(0, 1), labels = c("No Cumple", "Cumple"))) %>%
+  ggplot(aes(x = Cumple_label, y = capacidades, fill = Cumple_label)) +
+  geom_boxplot(alpha = 0.8, color = "black", outlier.size = 2, outlier.shape = 16) + 
+  facet_wrap(~Indicador, nrow = 1, labeller = as_labeller(c(
+    "p70_infancia" = "Derechos Infancia",
+    "p70_transparencia" = "Transparencia"
+  ))) +
+  scale_fill_manual(values = colores_p70) +
+  theme_minimal(base_size = 16) +
+  labs(title = "Capacidad vs. Estándares: Infancia y Transparencia", x = NULL, y = "Capacidad (cap)") +
+  theme(
+    plot.title = element_text(size = 22, face = "bold"),
+    legend.position = "none",
+    strip.text = element_text(size = 16, face = "bold"),
+    axis.text.x = element_text(size = 14)
+  )
 
 
 
@@ -224,6 +309,10 @@ print(grafico_biv_acciones_mult)
 print(grafico_biv_actores_mult)
 print(datos_acad_cap)
 print(datos_priv_cap)
+print(grafico_p70_1)
+print(grafico_p70_2)
+print(grafico_p70_3)
+
 #------------------------------------------
 
 
