@@ -211,19 +211,6 @@ CAPyAG <-ggplot(filter(datos,), aes(x = acciones_gob, y = capacidades)) +
 # ==============================================================================
 
 
-
-
-
-# ==============================================================================
-# ANÁLISIS BIVARIADO: CAPACIDAD VS. ESTÁNDARES p70 (ESTILO PREMIUM)
-# ==============================================================================
-
-
-# ==============================================================================
-# ANÁLISIS BIVARIADO: CAPACIDAD VS. ESTÁNDARES p70 (ESTRUCTURA SOLICITADA)
-# ==============================================================================
-
-
 colores_p70 <- c("No Cumple" = "gray90", "Cumple" = "steelblue")
 
 # SEGURIDAD, PROTECCIÓN DE DATOS Y PROTECCIÓN LABORAL 
@@ -293,6 +280,129 @@ grafico_p70_3 <- datos %>%
     strip.text = element_text(size = 16, face = "bold"),
     axis.text.x = element_text(size = 14)
   )
+
+
+
+
+
+# =====================================================================
+#  IMPORTANTE IMPORTANTE 
+# ==============================================================
+
+# =====================================================================
+#  IMPORTANTE IMPORTANTE 
+# ==============================================================
+
+# =====================================================================
+#  IMPORTANTE IMPORTANTE 
+# ==============================================================
+
+top_15_paises <- datos %>%
+  slice_max(indice_girai, n = 15)
+
+# Definición de colores consistente
+colores_p70 <- c("No Cumple" = "gray90", "Cumple" = "steelblue")
+
+# ------------------------------------------------------------------------------
+# GRÁFICO 1: SEGURIDAD, DATOS Y LABORAL (TOP 15)
+# ------------------------------------------------------------------------------
+grafico_top15_1 <- top_15_paises %>%
+  select(capacidades, p70_seguridad, p70_datos, p70_laboral) %>%
+  pivot_longer(cols = starts_with("p70"), names_to = "Indicador", values_to = "Cumple") %>%
+  mutate(Cumple_label = factor(Cumple, levels = c(0, 1), labels = c("No Cumple", "Cumple"))) %>%
+  ggplot(aes(x = Cumple_label, y = capacidades, fill = Cumple_label)) +
+  geom_boxplot(alpha = 0.8, color = "black", outlier.size = 2, outlier.shape = 16) + 
+  facet_wrap(~Indicador, nrow = 1, labeller = as_labeller(c(
+    "p70_seguridad" = "Seguridad",
+    "p70_datos" = "Protección de Datos",
+    "p70_laboral" = "Protección Laboral"
+  ))) +
+  scale_fill_manual(values = colores_p70) +
+  theme_minimal(base_size = 16) +
+  labs(title = "Top 15: Seguridad, Datos y Laboral", x = NULL, y = "Capacidad (cap)") +
+  theme(
+    plot.title = element_text(size = 22, face = "bold"),
+    legend.position = "none",
+    strip.text = element_text(size = 16, face = "bold"),
+    axis.text.x = element_text(size = 14)
+  )
+
+# ------------------------------------------------------------------------------
+# GRÁFICO 2: SESGOS Y SUPERVISIÓN HUMANA (TOP 15)
+# ------------------------------------------------------------------------------
+grafico_top15_2 <- top_15_paises %>%
+  select(capacidades, p70_sesgo, p70_supervision) %>%
+  pivot_longer(cols = starts_with("p70"), names_to = "Indicador", values_to = "Cumple") %>%
+  mutate(Cumple_label = factor(Cumple, levels = c(0, 1), labels = c("No Cumple", "Cumple"))) %>%
+  ggplot(aes(x = Cumple_label, y = capacidades, fill = Cumple_label)) +
+  geom_boxplot(alpha = 0.8, color = "black", outlier.size = 2, outlier.shape = 16) + 
+  facet_wrap(~Indicador, nrow = 1, labeller = as_labeller(c(
+    "p70_sesgo" = "Mitigación de Sesgos",
+    "p70_supervision" = "Supervisión Humana"
+  ))) +
+  scale_fill_manual(values = colores_p70) +
+  theme_minimal(base_size = 16) +
+  labs(title = "Top 15: Sesgos y Supervisión", x = NULL, y = "Capacidad (cap)") +
+  theme(
+    plot.title = element_text(size = 22, face = "bold"),
+    legend.position = "none",
+    strip.text = element_text(size = 16, face = "bold"),
+    axis.text.x = element_text(size = 14)
+  )
+
+# ------------------------------------------------------------------------------
+# GRÁFICO 3: INFANCIA Y TRANSPARENCIA (TOP 15)
+# ------------------------------------------------------------------------------
+grafico_top15_3 <- top_15_paises %>%
+  select(capacidades, p70_infancia, p70_transparencia) %>%
+  pivot_longer(cols = starts_with("p70"), names_to = "Indicador", values_to = "Cumple") %>%
+  mutate(Cumple_label = factor(Cumple, levels = c(0, 1), labels = c("No Cumple", "Cumple"))) %>%
+  ggplot(aes(x = Cumple_label, y = capacidades, fill = Cumple_label)) +
+  geom_boxplot(alpha = 0.8, color = "black", outlier.size = 2, outlier.shape = 16) + 
+  facet_wrap(~Indicador, nrow = 1, labeller = as_labeller(c(
+    "p70_infancia" = "Derechos Infancia",
+    "p70_transparencia" = "Transparencia"
+  ))) +
+  scale_fill_manual(values = colores_p70) +
+  theme_minimal(base_size = 16) +
+  labs(title = "Top 15: Infancia y Transparencia", x = NULL, y = "Capacidad (cap)") +
+  theme(
+    plot.title = element_text(size = 22, face = "bold"),
+    legend.position = "none",
+    strip.text = element_text(size = 16, face = "bold"),
+    axis.text.x = element_text(size = 14)
+  )
+
+# --- IMPRESIÓN ---
+print(grafico_top15_1)
+print(grafico_top15_2)
+print(grafico_top15_3)
+
+
+
+# =====================================================================
+#  IMPORTANTE IMPORTANTE 
+# ==============================================================
+
+# =====================================================================
+#  IMPORTANTE IMPORTANTE 
+# ==============================================================
+
+# =====================================================================
+#  IMPORTANTE IMPORTANTE 
+# ==============================================================
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

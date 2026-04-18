@@ -66,6 +66,7 @@ tabla_actores <- datos %>%
   count(intervalos, name = "ni") %>%
   mutate(fi = ni / sum(ni), Ni = cumsum(ni), Fi = cumsum(fi))
 
+
 print("--- Marcos Normativos ---")
 print(tabla_marcos)
 
@@ -75,6 +76,24 @@ print(tabla_acciones)
 print("--- Acciones de Actores No Gubernamentales: ---")
 print(tabla_actores)
 
+# TABLA DE CAPACIDADES - VARIABLE CUANTITATIVA CONTINUA
+intervalos_cap <- seq(0, 100, by = 10)
+tabla_frec_cap <- datos %>%
+  mutate(rango_cap = cut(capacidades, 
+                         breaks = intervalos_cap, 
+                         right = FALSE, 
+                         include.lowest = TRUE)) %>%
+  group_by(rango_cap) %>%
+  summarise(n_i = n()) %>%
+  mutate(
+    N_i = cumsum(n_i),                       
+    f_i = round(n_i / sum(n_i), 4),           
+    F_i = cumsum(f_i),                       
+    porcentaje = paste0(f_i * 100, "%")    
+  )
+
+print("--- TABLA DE FRECUENCIAS: CAPACIDADES ---")
+print(tabla_frec_cap)
 
 # =============================================================================
 #  VARIABLES CUANTITATIVAS DISCRETAS
@@ -143,8 +162,29 @@ tabla_p70_final <- datos %>%
 print("--- Resumen de Cumplimiento de Estándares p70 ---")
 print(tabla_p70_final)
 
+#TABLA PARA EL GRÁFICO UNIVARIADO
+top_20_paises <- datos %>%
+  slice_max(indice_girai, n = 20)
+tabla_top20_p70 <- top_20_paises %>%
+  select(
+    p70_seguridad, p70_datos, p70_laboral, 
+    p70_sesgo, p70_supervision, p70_infancia, p70_transparencia
+  ) %>%
+  pivot_longer(cols = everything(), names_to = "Variable", values_to = "Cumple") %>%
+  group_by(Variable) %>%
+  summarise(porcentaje = round(mean(Cumple) * 100, 2)) %>%
+  mutate(Variable = recode(Variable,
+                           "p70_seguridad" = "Seguridad",
+                           "p70_datos" = "Protección de Datos",
+                           "p70_laboral" = "Protección Laboral",
+                           "p70_sesgo" = "Mitigación de Sesgos",
+                           "p70_supervision" = "Supervisión Humana",
+                           "p70_infancia" = "Derechos de Infancia",
+                           "p70_transparencia" = "Transparencia"
+  ))
+
 # ==============================================================================
-# Categorica con Cuantitativa
+# CATEGÓRICA NOMINAL VS. CUANTITATIVA CONTINUA
 # ==============================================================================
 
 # 1. Tabla: Acciones de Gobierno por Región
@@ -183,7 +223,7 @@ print(tabla_resumen_capacidades)
 
 
 # ==============================================================================
-# Categoría vs. Categórica
+# CATEGÓRICA ORDINAL vs. CATEGÓRICA NOMINAL
 # ==============================================================================
 
 # 1. Tabla: Región vs. Nivel de Acciones
