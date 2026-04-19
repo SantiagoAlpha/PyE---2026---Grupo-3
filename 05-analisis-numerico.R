@@ -1,28 +1,11 @@
-
-# Estructura del conjunto de datos
-str(datos)
-# Cálculo simple del coeficiente (r)
-# El argumento use = "complete.obs" es fundamental para omitir filas con datos faltantes (NA)
-r_ag_cap <- cor(datos$acciones_gob, datos$capacidades, use = "complete.obs")
-r_ane_cap <- cor(datos$actores_no_est, datos$capacidades, use = "complete.obs")
-
-# Imprimir resultados en consola
-cat("Correlación ag vs cap:", r_ag_cap, "\n")
-cat("Correlación ane vs cap:", r_ane_cap, "\n")
-
-# Si necesitas el p-valor para el informe de Probabilidad y Estadística:
-test_ag <- cor.test(datos$acciones_gob, datos$capacidades)
-print(test_ag)
-
-
-
-
-
 # ==============================================================================
 # 05-ANALISIS-NUMERICO.R: Medidas de Dispersión y Variabilidad
 # ==============================================================================
 
-# 1. Medidas para Acciones Gubernamentales (cant_areas_acciones)
+# 0. Estructura del conjunto de datos
+str(datos)
+
+# 1. Medidas para Acciones Gubernamentales
 # ------------------------------------------------------------------------------
 resumen_dispersion_acciones <- datos %>%
   summarise(
@@ -34,7 +17,7 @@ resumen_dispersion_acciones <- datos %>%
     Coef_Variacion = (Desvio_Estandar / mean(cant_areas_acciones, na.rm = TRUE)) * 100
   )
 
-# 2. Medidas para Actores No Estatales (cant_areas_actores)
+# 2. Medidas para Actores No Estatales 
 # ------------------------------------------------------------------------------
 resumen_dispersion_actores <- datos %>%
   summarise(
@@ -46,7 +29,8 @@ resumen_dispersion_actores <- datos %>%
     Coef_Variacion = (Desvio_Estandar / mean(cant_areas_actores, na.rm = TRUE)) * 100
   )
 
-# Imprimir resultados para el informe
+# 3. Análisis de dispersión 
+# ------------------------------------------------------------------------------
 print("--- Análisis de Dispersión: Acciones de Gobierno ---")
 print(resumen_dispersion_acciones)
 
@@ -54,4 +38,9 @@ print("--- Análisis de Dispersión: Actores No Estatales ---")
 print(resumen_dispersion_actores)
 
 
+r_ag_cap <- cor(datos$acciones_gob, datos$capacidades, use = "complete.obs")
+r_ane_cap <- cor(datos$actores_no_est, datos$capacidades, use = "complete.obs")
+
+cat("Correlación ag vs cap:", r_ag_cap, "\n")
+cat("Correlación ane vs cap:", r_ane_cap, "\n")
 

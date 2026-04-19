@@ -120,64 +120,52 @@ datos_priv_cap <- ggplot(datos_box_priv, aes(x = reorder(tipo_privado, capacidad
 
 
 
-
-
-
-
-
-
-
-
-
 # ==============================================================================
 # GRAFICOS BIVARIADOS: Categoría vs. Categórica
 # ==============================================================================
 
-grafico_biv_acciones_mult <- ggplot(datos, aes(x = region_girai, fill = nivel_acciones)) +
-  # 'dodge' pone las barras una al lado de la otra
-  geom_bar(position = "dodge", color = "darkblue", alpha = 0.9) + 
-  
-  # Esta es la clave: Paleta de azules secuencial
-  scale_fill_brewer(palette = "Blues") +
-  labs(
-    title = "Comparativa de Cantidad de Países por Nivel de Acción",
-    subtitle = "Distribución regional de acciones gubernamentales",
-    x = "Región",
-    y = "Cantidad de Países",
-    fill = "Nivel de Acciones"
-  ) +
-  theme_minimal(base_size = 16) +
-  theme(
-    plot.title = element_text(size = 22, face = "bold"),
-    axis.title.x = element_text(size = 18),
-    axis.title.y = element_text(size = 18),
-    axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
-    axis.text.y = element_text(size = 14)
-  )
-
- grafico_biv_actores_mult <- ggplot(datos, aes(x = region_girai, fill = nivel_actores)) +
-   # 'dodge' pone las barras una al lado de la otra
-   geom_bar(position = "dodge", color = "darkblue", alpha = 0.9) + 
-   
-   # Esta es la clave: Paleta de azules secuencial
+ 
+ grafico_biv_acciones_mult <- ggplot(datos, aes(x = region_girai, fill = nivel_acciones)) +
+   geom_bar(aes(y = after_stat(count) / sum(after_stat(count))), 
+            position = "dodge", color = "darkblue", alpha = 0.9) + 
    scale_fill_brewer(palette = "Blues") +
+   scale_y_continuous(labels = percent_format()) +
    labs(
-     title = "Comparativa de Cantidad de Países por Nivel de Actores",
-     subtitle = "Distribución regional de acciones no estatales",
+     title = "Comparativa: Nivel de Acción por Región (%)",
+     subtitle = "Porcentaje absoluto sobre el total de países de la muestra",
      x = "Región",
-     y = "Cantidad de Países",
+     y = "Porcentaje de Países",
+     fill = "Nivel de Acciones"
+   ) +
+   theme_minimal(base_size = 16) +
+   theme(
+     plot.title = element_text(size = 22, face = "bold"),
+     axis.title = element_text(size = 18),
+     axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
+     axis.text.y = element_text(size = 14)
+   )
+ 
+ grafico_biv_actores_mult <- ggplot(datos, aes(x = region_girai, fill = nivel_actores)) +
+   geom_bar(aes(y = after_stat(count) / sum(after_stat(count))), 
+            position = "dodge", color = "darkblue", alpha = 0.9) + 
+   scale_fill_brewer(palette = "Blues") +
+   scale_y_continuous(labels = percent_format()) +
+   labs(
+     title = "Comparativa: Nivel de Actores por Región (%)",
+     subtitle = "Porcentaje absoluto sobre el total de países de la muestra",
+     x = "Región",
+     y = "Porcentaje de Países",
      fill = "Nivel de Actores"
    ) +
    theme_minimal(base_size = 16) +
    theme(
      plot.title = element_text(size = 22, face = "bold"),
-     axis.title.x = element_text(size = 18),
-     axis.title.y = element_text(size = 18),
+     axis.title = element_text(size = 18),
      axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
      axis.text.y = element_text(size = 14)
    )
  
- 
+
 
 # ==============================================================================
 # Cuantitativa Continua con Cuantitativa Continua
