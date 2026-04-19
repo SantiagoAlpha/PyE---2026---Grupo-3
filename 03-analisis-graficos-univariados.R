@@ -39,7 +39,6 @@ grafico_cap_hist <- ggplot(datos, aes(x = capacidades)) +
   theme_minimal(base_size = 16) +
   labs(
     title = "Distribución Global de Capacidades",
-    subtitle = "Análisis de 10 intervalos de clase",
     x = "Puntaje de Capacidad (0 - 100)",
     y = "Frecuencia (n° de países)"
   ) +
@@ -49,8 +48,6 @@ grafico_cap_hist <- ggplot(datos, aes(x = capacidades)) +
     axis.text = element_text(size = 14),
     panel.grid.minor = element_blank()
   )
-
-
 
 
 # ==============================================================================
