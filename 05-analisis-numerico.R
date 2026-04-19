@@ -44,3 +44,18 @@ r_ane_cap <- cor(datos$actores_no_est, datos$capacidades, use = "complete.obs")
 cat("Correlación ag vs cap:", r_ag_cap, "\n")
 cat("Correlación ane vs cap:", r_ane_cap, "\n")
 
+
+# 4. Análisis de dispersión de capaciadad y summary de capacidad 
+# ------------------------------------------------------------------------------
+resumen_cap <- datos %>% 
+  summarise(
+    Media = mean(capacidades, na.rm = TRUE),
+    Mediana = median(capacidades, na.rm = TRUE),
+    Desv_Std = sd(capacidades, na.rm = TRUE),
+    Min = min(capacidades, na.rm = TRUE),
+    Max = max(capacidades, na.rm = TRUE)
+  )
+print(resumen_cap)
+
+sd(datos$capacidades, na.rm = TRUE)
+
