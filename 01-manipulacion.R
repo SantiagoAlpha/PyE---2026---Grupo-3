@@ -2,8 +2,6 @@
 # Archivo: 01-manipulacion.R
 # ==============================================================================
 
-library(tidyverse)
-
 # 1. Selección y Renombrado
 datos_limpios <- datos %>%
   select(

@@ -192,7 +192,6 @@ print(grafico_nivel_acciones)
 print(grafico_nivel_actores)
 print(grafico_cant_acciones)
 print(grafico_cant_actores)
-print(comparación_cantidad_acciones_actores)
 print(grafico_top20_p70)
 
 
