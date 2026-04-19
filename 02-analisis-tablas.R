@@ -245,8 +245,6 @@ tabla_biv_acciones <- datos %>%
     porcentaje = round(fi * 100, 2)
   )
 
-
-
 # 2. Tabla: Región vs. Nivel de Actores
 tabla_biv_actores <- datos %>%
   count(region_girai, nivel_actores) %>%
@@ -255,7 +253,6 @@ tabla_biv_actores <- datos %>%
     fi = n / sum(n),
     porcentaje = round(fi * 100, 2)
   )
-
 
 
 print("--- Proporción de Niveles de Acciones por Región ---")
