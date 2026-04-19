@@ -33,38 +33,24 @@ grafico_nominal <- ggplot(datos, aes(x = fct_infreq(region_girai))) +
 #  VARIABLES CUANTITATIVAS CONTINUAS
 # ===========================================================================
 
-# Histograma: Acciones de Gobierno
-grafico_acciones_hist <- ggplot(datos, aes(x = acciones_gob)) +
+grafico_cap_hist <- ggplot(datos, aes(x = capacidades)) +
   geom_histogram(bins = 10, fill = "steelblue", alpha = 0.5, color = "darkblue", boundary = 0) +
-  theme_minimal() +
+  
+  theme_minimal(base_size = 16) +
   labs(
-    title = "Distribución de Puntajes: Acciones de Gobierno",
-    subtitle = "Análisis de 10 intervalos de clase (Amplitud = 10)",
-    x = "Puntaje (0 - 100)",
+    title = "Distribución Global de Capacidades",
+    subtitle = "Análisis de 10 intervalos de clase",
+    x = "Puntaje de Capacidad (0 - 100)",
     y = "Frecuencia (n° de países)"
   ) +
   theme(
     plot.title = element_text(size = 22, face = "bold"),
     axis.title = element_text(size = 18),
-    axis.text = element_text(size = 14)
+    axis.text = element_text(size = 14),
+    panel.grid.minor = element_blank()
   )
 
 
-# Histograma: Actores No Estatales
-grafico_actores_hist <- ggplot(datos, aes(x = actores_no_est)) +
-  geom_histogram(bins = 10, fill = "steelblue", alpha = 0.5, color = "darkblue", boundary = 0) +
-  theme_minimal() +
-  labs(
-    title = "Distribución de Puntajes: Actores No Estatales", 
-    subtitle = "Análisis univariado de la participación no estatal",
-    x = "Puntaje (0 - 100)", 
-    y = "Frecuencia (n° de países)"
-  ) +
-  theme(
-    plot.title = element_text(size = 22, face = "bold"),
-    axis.title = element_text(size = 18),
-    axis.text = element_text(size = 14)
-  )
 
 
 # ==============================================================================
@@ -186,8 +172,7 @@ grafico_top20_p70 <- ggplot(tabla_top20_p70, aes(x = reorder(Variable, porcentaj
 # ==============================================================
 
 print(grafico_nominal)
-print(grafico_acciones_hist)
-print(grafico_actores_hist)
+print(grafico_cap_hist)
 print(grafico_nivel_acciones)
 print(grafico_nivel_actores)
 print(grafico_cant_acciones)
